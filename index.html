@@ -11,10 +11,14 @@
         <script>
             let ga_trackingid = 'UA-76982780-4';
 
-            let urlshortener = function( url, callback){
+            let urlshortener = function(url, callback){
                 let access_token = '55be673764fbb7323227a4b0435bf683ed703350';
                 let api_url = 'https://api-ssl.bitly.com';
                 let api_login = 'o_9m5p8t4r1';
+                if(!url.startsWith('http')) {
+                    url = 'http' + url
+                }
+                
                 $.getJSON(api_url+"/v3/shorten?longUrl="+encodeURIComponent(url)+"&access_token="+access_token+"&callback=?",
                     function(data){
                         if(data['status_code'] === 200) {
