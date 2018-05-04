@@ -2,7 +2,6 @@
 <html lang="zh_tw">
     <head>
         <title>QRcode Creater</title>
-	<meta http-equiv="refresh" content="1;url='https://3p3.tw'" />
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="css/bootstrap.min.css">
@@ -10,19 +9,26 @@
         <script src="js/bootstrap.min.js"></script>
         <script src="js/qrcode.js"></script>
         <script>
-            let shortener_APIKEY = 'AIzaSyCbqVzoXxFmJvtVtiezVO9IdzLjD2rhwAg';
             let ga_trackingid = 'UA-76982780-4';
 
             let urlshortener = function( url, callback){
                 jQuery.ajax({
                     type: 'post',
-                    url: 'https://www.googleapis.com/urlshortener/v1/url?key=' + shortener_APIKEY,
-                    data: JSON.stringify({"longUrl": url}),
+		            headers: {
+                        'reurl-api-key': '4070df69d794e0370c45622d0dfc3946e5d6aa23cdc24594b273e2d5210412'
+                    },
+                    url: 'https://api.reurl.cc/shorten',
+                    data: JSON.stringify({"url": url}),
                     contentType: 'application/json; charset=utf-8',
                     dataType: 'json',
                     success: (data) => {
-                        let shortenUrl = data['id'];
-                        callback && callback(shortenUrl);
+                        if(data['res'] === 'success') {
+                            let shortenUrl = data['short_url'];
+                            callback && callback(shortenUrl);
+                        } else {
+                            alert('縮短網址失敗\n:' + data['err']);
+                            console.log('縮短網址失敗\n:' + data['err']);
+                        }
                     }
                 })
             }
