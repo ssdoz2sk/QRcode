@@ -12,25 +12,17 @@
             let ga_trackingid = 'UA-76982780-4';
 
             let urlshortener = function( url, callback){
-                jQuery.ajax({
-                    type: 'post',
-		            headers: {
-                        'reurl-api-key': '4070df69d794e0370c45622d0dfc3946e5d6aa23cdc24594b273e2d5210412'
-                    },
-                    url: 'https://api.reurl.cc/shorten',
-                    data: JSON.stringify({"url": url}),
-                    contentType: 'application/json; charset=utf-8',
-                    dataType: 'json',
-                    success: (data) => {
-                        if(data['res'] === 'success') {
-                            let shortenUrl = data['short_url'];
+                let access_token = '55be673764fbb7323227a4b0435bf683ed703350';
+                let api_url = 'https://api-ssl.bitly.com';
+                let api_login = 'o_9m5p8t4r1';
+                $.getJSON(api_url+"/v3/shorten?longUrl="+encodeURIComponent(url)+"&access_token="+access_token+"&callback=?",
+                    function(data){
+                        if(data['status_code'] === 200) {
+                            let shortenUrl = data['data']['url'];
                             callback && callback(shortenUrl);
-                        } else {
-                            alert('縮短網址失敗\n:' + data['err']);
-                            console.log('縮短網址失敗\n:' + data['err']);
                         }
                     }
-                })
+                );
             }
 
             let createQRCode = function(rawUrl, shortenUrl, correctLevel, qrOption, labelOption){
