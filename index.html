@@ -16,7 +16,7 @@
                 let api_url = 'https://api-ssl.bitly.com';
                 let api_login = 'o_9m5p8t4r1';
                 if(!url.startsWith('http')) {
-                    url = 'http' + url
+                    url = 'http://' + url
                 }
                 
                 $.getJSON(api_url+"/v3/shorten?longUrl="+encodeURIComponent(url)+"&access_token="+access_token+"&callback=?",
